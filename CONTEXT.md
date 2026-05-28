@@ -1,7 +1,5 @@
 ```mermaid
 graph LR
-
-   
     %% --- ĐỊNH NGHĨA CÁC ĐỐI TƯỢNG ---
     System((HỆ THỐNG TRUNG TÂM<br><br><b>Sales Management Mini</b>))
 
