@@ -1,0 +1,121 @@
+@startuml
+title Use Case Product / Inventory
+
+left to right direction
+skinparam shadowing false
+skinparam linetype polyline
+skinparam packageStyle rectangle
+skinparam backgroundColor white
+
+skinparam actor {
+  BorderColor #111827
+  FontColor #111827
+  FontSize 14
+}
+
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #7C3AED
+  FontColor #111827
+  FontSize 13
+}
+
+skinparam rectangle {
+  BorderColor #1E3A8A
+  RoundCorner 20
+}
+
+actor "Admin" as Admin
+actor "Quản lý cửa hàng" as Manager
+actor "Nhân viên kho" as StockStaff
+
+rectangle "Product / Inventory" {
+
+  package "Product Management" #F3E8FF {
+    usecase "Quản lý sản phẩm" as UC_PRODUCT
+    usecase "Xem danh sách sản phẩm" as UC_PRODUCT_LIST
+    usecase "Thêm sản phẩm" as UC_CREATE_PRODUCT
+    usecase "Sửa sản phẩm" as UC_EDIT_PRODUCT
+    usecase "Xem chi tiết sản phẩm" as UC_PRODUCT_DETAIL
+    usecase "Quản lý SKU / biến thể" as UC_SKU
+    usecase "Quản lý hình ảnh sản phẩm" as UC_IMAGE
+    usecase "Quản lý giá bán" as UC_PRICE
+  }
+
+  package "Master Data" #DBEAFE {
+    usecase "Quản lý danh mục" as UC_CATEGORY
+    usecase "Quản lý thương hiệu" as UC_BRAND
+    usecase "Quản lý nhà cung cấp" as UC_SUPPLIER
+    usecase "Quản lý đơn vị tính" as UC_UNIT
+  }
+
+  package "Inventory" #CCFBF1 {
+    usecase "Quản lý tồn kho" as UC_INVENTORY
+    usecase "Xem tồn kho" as UC_STOCK
+    usecase "Xem giao dịch kho" as UC_STOCK_TRANS
+    usecase "Cảnh báo tồn kho thấp" as UC_LOW_STOCK
+    usecase "Cập nhật tồn kho" as UC_UPDATE_STOCK
+  }
+
+  package "Goods Receipt / Transfer / Stocktake" #FEF3C7 {
+    usecase "Nhập hàng" as UC_RECEIPT
+    usecase "Tạo phiếu nhập hàng" as UC_CREATE_RECEIPT
+    usecase "Xác nhận nhập kho" as UC_CONFIRM_RECEIPT
+
+    usecase "Chuyển kho" as UC_TRANSFER
+    usecase "Tạo phiếu chuyển kho" as UC_CREATE_TRANSFER
+    usecase "Xác nhận chuyển kho" as UC_CONFIRM_TRANSFER
+
+    usecase "Kiểm kho" as UC_STOCKTAKE
+    usecase "Tạo phiếu kiểm kho" as UC_CREATE_STOCKTAKE
+    usecase "Điều chỉnh tồn kho" as UC_ADJUST_STOCK
+  }
+}
+
+Admin --> UC_PRODUCT
+Admin --> UC_CATEGORY
+Admin --> UC_BRAND
+Admin --> UC_SUPPLIER
+Admin --> UC_UNIT
+Admin --> UC_INVENTORY
+
+Manager --> UC_PRODUCT
+Manager --> UC_CATEGORY
+Manager --> UC_BRAND
+Manager --> UC_SUPPLIER
+Manager --> UC_UNIT
+Manager --> UC_INVENTORY
+Manager --> UC_RECEIPT
+Manager --> UC_TRANSFER
+Manager --> UC_STOCKTAKE
+
+StockStaff --> UC_INVENTORY
+StockStaff --> UC_RECEIPT
+StockStaff --> UC_TRANSFER
+StockStaff --> UC_STOCKTAKE
+
+UC_PRODUCT ..> UC_PRODUCT_LIST : <<include>>
+UC_PRODUCT ..> UC_CREATE_PRODUCT : <<include>>
+UC_PRODUCT ..> UC_EDIT_PRODUCT : <<include>>
+UC_PRODUCT ..> UC_PRODUCT_DETAIL : <<include>>
+UC_PRODUCT ..> UC_SKU : <<include>>
+UC_PRODUCT ..> UC_IMAGE : <<include>>
+UC_PRODUCT ..> UC_PRICE : <<include>>
+
+UC_INVENTORY ..> UC_STOCK : <<include>>
+UC_INVENTORY ..> UC_STOCK_TRANS : <<include>>
+UC_INVENTORY ..> UC_LOW_STOCK : <<include>>
+
+UC_RECEIPT ..> UC_CREATE_RECEIPT : <<include>>
+UC_RECEIPT ..> UC_CONFIRM_RECEIPT : <<include>>
+UC_CONFIRM_RECEIPT ..> UC_UPDATE_STOCK : <<include>>
+
+UC_TRANSFER ..> UC_CREATE_TRANSFER : <<include>>
+UC_TRANSFER ..> UC_CONFIRM_TRANSFER : <<include>>
+UC_CONFIRM_TRANSFER ..> UC_UPDATE_STOCK : <<include>>
+
+UC_STOCKTAKE ..> UC_CREATE_STOCKTAKE : <<include>>
+UC_STOCKTAKE ..> UC_ADJUST_STOCK : <<include>>
+UC_ADJUST_STOCK ..> UC_UPDATE_STOCK : <<include>>
+
+@enduml

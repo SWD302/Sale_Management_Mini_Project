@@ -1,0 +1,140 @@
+@startuml
+title Use Case tổng quan - Sales Management Mini System
+
+left to right direction
+skinparam shadowing false
+skinparam linetype polyline
+skinparam packageStyle rectangle
+skinparam backgroundColor white
+
+skinparam actor {
+  BorderColor #111827
+  FontColor #111827
+  FontSize 14
+}
+
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #2563EB
+  FontColor #111827
+  FontSize 13
+}
+
+skinparam rectangle {
+  BorderColor #1E3A8A
+  RoundCorner 20
+}
+
+actor "Admin" as Admin
+actor "Quản lý cửa hàng" as Manager
+actor "Nhân viên bán hàng" as Staff
+actor "Nhân viên kho" as StockStaff
+actor "Khách hàng" as Customer
+
+rectangle "Sales Management Mini System" {
+
+  package "Authentication" #DBEAFE {
+    usecase "Authentication" as UC_AUTH
+  }
+
+  package "POS / Bán hàng" #DCFCE7 {
+    usecase "POS / Bán hàng" as UC_POS
+  }
+
+  package "Order / Return / Customer" #FFEDD5 {
+    usecase "Order / Return / Customer" as UC_ORDER
+  }
+
+  package "Product / Master Data" #F3E8FF {
+    usecase "Product / Master Data" as UC_PRODUCT
+  }
+
+  package "Inventory" #CCFBF1 {
+    usecase "Inventory" as UC_INV
+  }
+
+  package "Administration" #FCE7F3 {
+    usecase "Administration" as UC_ADMIN
+  }
+
+  package "Report / AI" #E2E8F0 {
+    usecase "Report / AI" as UC_REPORT
+  }
+}
+
+Admin --> UC_AUTH
+Admin --> UC_PRODUCT
+Admin --> UC_INV
+Admin --> UC_ADMIN
+Admin --> UC_REPORT
+
+Manager --> UC_AUTH
+Manager --> UC_POS
+Manager --> UC_ORDER
+Manager --> UC_PRODUCT
+Manager --> UC_INV
+Manager --> UC_REPORT
+
+Staff --> UC_AUTH
+Staff --> UC_POS
+Staff --> UC_ORDER
+
+StockStaff --> UC_AUTH
+StockStaff --> UC_INV
+
+Customer --> UC_POS
+Customer --> UC_ORDER
+
+note right of UC_AUTH
+- Đăng nhập
+- Đăng xuất
+- Đổi mật khẩu
+- Xem hồ sơ cá nhân
+end note
+
+note right of UC_POS
+- Bán hàng POS
+- Tạo đơn bán
+- Thanh toán
+- In hóa đơn
+end note
+
+note right of UC_ORDER
+- Quản lý đơn bán
+- Quản lý trả hàng
+- Quản lý khách hàng
+- Xem lịch sử mua hàng
+end note
+
+note right of UC_PRODUCT
+- Quản lý sản phẩm
+- Quản lý SKU / biến thể
+- Quản lý danh mục
+- Quản lý thương hiệu
+- Quản lý nhà cung cấp
+end note
+
+note right of UC_INV
+- Xem tồn kho
+- Nhập hàng
+- Chuyển kho
+- Kiểm kho
+- Cập nhật tồn kho
+end note
+
+note right of UC_ADMIN
+- Quản lý người dùng
+- Quản lý vai trò
+- Phân quyền RBAC
+- Quản lý cửa hàng
+- Quản lý kho
+end note
+
+note right of UC_REPORT
+- Xem Dashboard
+- Báo cáo doanh thu
+- Báo cáo tồn kho
+- Hỏi SaleMaster AI
+end note
+
+@enduml
