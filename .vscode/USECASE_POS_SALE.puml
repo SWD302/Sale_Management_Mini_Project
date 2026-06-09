@@ -1,0 +1,110 @@
+@startuml
+title Use Case POS / Bán hàng
+
+left to right direction
+skinparam shadowing false
+skinparam linetype polyline
+skinparam packageStyle rectangle
+skinparam backgroundColor white
+
+skinparam actor {
+  BorderColor #111827
+  FontColor #111827
+  FontSize 14
+}
+
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #16A34A
+  FontColor #111827
+  FontSize 13
+}
+
+skinparam rectangle {
+  BorderColor #1E3A8A
+  RoundCorner 20
+}
+
+actor "Quản lý cửa hàng" as Manager
+actor "Nhân viên bán hàng" as Staff
+actor "Khách hàng" as Customer
+
+rectangle "POS / Bán hàng" {
+
+  package "Chuẩn bị bán hàng" #DBEAFE {
+    usecase "Bắt đầu bán hàng" as UC_START
+    usecase "Chọn cửa hàng / ca bán" as UC_SHIFT
+    usecase "Chọn khách hàng" as UC_SELECT_CUSTOMER
+  }
+
+  package "Thao tác POS" #DCFCE7 {
+    usecase "Bán hàng POS" as UC_POS
+    usecase "Tìm sản phẩm" as UC_SEARCH
+    usecase "Quét mã vạch" as UC_BARCODE
+    usecase "Thêm sản phẩm vào giỏ" as UC_CART
+    usecase "Cập nhật số lượng" as UC_QTY
+    usecase "Hủy thao tác bán" as UC_CANCEL
+  }
+
+  package "Thanh toán" #FFEDD5 {
+    usecase "Thanh toán" as UC_PAYMENT
+    usecase "Tính tổng tiền" as UC_TOTAL
+    usecase "Áp dụng giảm giá" as UC_DISCOUNT
+    usecase "In hóa đơn" as UC_INVOICE
+  }
+
+  package "Đơn bán" #F3E8FF {
+    usecase "Quản lý đơn bán" as UC_ORDER
+    usecase "Tạo đơn bán hàng" as UC_CREATE_ORDER
+    usecase "Xem danh sách đơn bán" as UC_ORDER_LIST
+    usecase "Xem chi tiết đơn bán" as UC_ORDER_DETAIL
+    usecase "Tìm kiếm / lọc đơn bán" as UC_ORDER_FILTER
+  }
+
+  package "Trả hàng" #FCE7F3 {
+    usecase "Quản lý trả hàng" as UC_RETURN
+    usecase "Tạo phiếu trả hàng" as UC_CREATE_RETURN
+    usecase "Hoàn tiền / ghi nhận trả hàng" as UC_REFUND
+    usecase "Cập nhật tồn kho sau trả hàng" as UC_RETURN_STOCK
+  }
+}
+
+Staff --> UC_START
+Staff --> UC_POS
+Staff --> UC_PAYMENT
+Staff --> UC_ORDER
+Staff --> UC_RETURN
+
+Manager --> UC_ORDER
+Manager --> UC_RETURN
+
+Customer --> UC_PAYMENT
+Customer --> UC_INVOICE
+Customer --> UC_CREATE_RETURN
+
+UC_START ..> UC_SHIFT : <<include>>
+UC_START ..> UC_SELECT_CUSTOMER : <<include>>
+
+UC_POS ..> UC_SEARCH : <<include>>
+UC_POS ..> UC_CART : <<include>>
+UC_POS ..> UC_QTY : <<include>>
+UC_POS ..> UC_CANCEL : <<include>>
+
+UC_BARCODE ..> UC_SEARCH : <<include>>
+UC_CART ..> UC_TOTAL : <<include>>
+UC_QTY ..> UC_TOTAL : <<include>>
+UC_DISCOUNT ..> UC_TOTAL : <<include>>
+
+UC_PAYMENT ..> UC_TOTAL : <<include>>
+UC_PAYMENT ..> UC_CREATE_ORDER : <<include>>
+UC_CREATE_ORDER ..> UC_INVOICE : <<include>>
+
+UC_ORDER ..> UC_ORDER_LIST : <<include>>
+UC_ORDER ..> UC_ORDER_DETAIL : <<include>>
+UC_ORDER ..> UC_ORDER_FILTER : <<include>>
+
+UC_RETURN ..> UC_CREATE_RETURN : <<include>>
+UC_CREATE_RETURN ..> UC_REFUND : <<include>>
+UC_CREATE_RETURN ..> UC_RETURN_STOCK : <<include>>
+
+@enduml
