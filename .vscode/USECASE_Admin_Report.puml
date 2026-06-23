@@ -1,0 +1,102 @@
+@startuml
+title Use Case Administration / Report
+
+left to right direction
+skinparam shadowing false
+skinparam linetype polyline
+skinparam packageStyle rectangle
+skinparam backgroundColor white
+
+skinparam actor {
+  BorderColor #111827
+  FontColor #111827
+  FontSize 14
+}
+
+skinparam usecase {
+  BackgroundColor #FFFFFF
+  BorderColor #DB2777
+  FontColor #111827
+  FontSize 13
+}
+
+skinparam rectangle {
+  BorderColor #1E3A8A
+  RoundCorner 20
+}
+
+actor "Admin" as Admin
+actor "Quản lý cửa hàng" as Manager
+
+rectangle "Administration / Report" {
+
+  package "User Management" #DBEAFE {
+    usecase "Quản lý người dùng" as UC_USER
+    usecase "Xem danh sách user" as UC_USER_LIST
+    usecase "Tạo user hệ thống" as UC_CREATE_USER
+    usecase "Cập nhật user" as UC_UPDATE_USER
+    usecase "Khóa / mở khóa user" as UC_LOCK_USER
+  }
+
+  package "Role / Permission / RBAC" #DCFCE7 {
+    usecase "Quản lý vai trò / quyền" as UC_ROLE_PERMISSION
+    usecase "Quản lý vai trò" as UC_ROLE
+    usecase "Quản lý quyền" as UC_PERMISSION
+    usecase "Phân quyền RBAC" as UC_RBAC
+    usecase "Override quyền theo user" as UC_OVERRIDE
+  }
+
+  package "Store / Warehouse Management" #F3E8FF {
+    usecase "Quản lý cửa hàng / chi nhánh / kho" as UC_STORE_SYSTEM
+    usecase "Quản lý cửa hàng" as UC_STORE
+    usecase "Quản lý chi nhánh" as UC_BRANCH
+    usecase "Quản lý kho" as UC_WAREHOUSE
+    usecase "Xem nhân viên cửa hàng" as UC_STORE_STAFF_LIST
+    usecase "Thêm nhân viên vào cửa hàng" as UC_ADD_STORE_STAFF
+  }
+
+  package "Report / Dashboard / AI" #FFEDD5 {
+    usecase "Báo cáo / Dashboard / AI" as UC_REPORT_SYSTEM
+    usecase "Xem Dashboard" as UC_DASHBOARD
+    usecase "Báo cáo doanh thu" as UC_SALES_REPORT
+    usecase "Báo cáo tồn kho" as UC_STOCK_REPORT
+    usecase "Báo cáo sản phẩm bán chạy" as UC_BESTSELLER
+    usecase "Hỏi SaleMaster AI" as UC_AI
+  }
+}
+
+Admin --> UC_USER
+Admin --> UC_ROLE_PERMISSION
+Admin --> UC_STORE_SYSTEM
+Admin --> UC_REPORT_SYSTEM
+
+Manager --> UC_STORE_SYSTEM
+Manager --> UC_REPORT_SYSTEM
+
+UC_USER ..> UC_USER_LIST : <<include>>
+UC_USER ..> UC_CREATE_USER : <<include>>
+UC_USER ..> UC_UPDATE_USER : <<include>>
+UC_USER ..> UC_LOCK_USER : <<include>>
+
+UC_ROLE_PERMISSION ..> UC_ROLE : <<include>>
+UC_ROLE_PERMISSION ..> UC_PERMISSION : <<include>>
+UC_ROLE_PERMISSION ..> UC_RBAC : <<include>>
+UC_ROLE_PERMISSION ..> UC_OVERRIDE : <<include>>
+
+UC_CREATE_USER ..> UC_ROLE : <<include>>
+
+UC_STORE_SYSTEM ..> UC_STORE : <<include>>
+UC_STORE_SYSTEM ..> UC_BRANCH : <<include>>
+UC_STORE_SYSTEM ..> UC_WAREHOUSE : <<include>>
+UC_STORE_SYSTEM ..> UC_STORE_STAFF_LIST : <<include>>
+UC_STORE_SYSTEM ..> UC_ADD_STORE_STAFF : <<include>>
+
+UC_ADD_STORE_STAFF ..> UC_STORE : <<include>>
+
+UC_REPORT_SYSTEM ..> UC_DASHBOARD : <<include>>
+UC_REPORT_SYSTEM ..> UC_SALES_REPORT : <<include>>
+UC_REPORT_SYSTEM ..> UC_STOCK_REPORT : <<include>>
+UC_REPORT_SYSTEM ..> UC_BESTSELLER : <<include>>
+UC_REPORT_SYSTEM ..> UC_AI : <<include>>
+
+@enduml

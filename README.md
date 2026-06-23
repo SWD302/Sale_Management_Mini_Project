@@ -1,5 +1,4 @@
-# Welcome to your organization's demo respository
-This code repository (or "repo") is designed to demonstrate the best GitHub has to offer with the least amount of noise.
+# 📝 QUY CHUẨN ĐẶT TÊN BRANCH & COMMIT DỰ ÁN
 
 The repo includes an `index.html` file (so it can render a web page), two GitHub Actions workflows, and a CSS stylesheet dependency.
 Tài liệu này quy định chi tiết về quy tắc đặt tên nhánh (Branch) và lịch sử thay đổi (Commit) nhằm đảm bảo tính đồng nhất, rõ ràng và dễ quản lý cho toàn bộ mã nguồn của dự án.
