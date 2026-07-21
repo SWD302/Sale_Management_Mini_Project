@@ -20,4 +20,3 @@ public class DefaultPermissionBootstrap implements ApplicationRunner {
     permissionBootstrapService.ensurePermissionsAndRoleGrants();
   }
 }
-v
