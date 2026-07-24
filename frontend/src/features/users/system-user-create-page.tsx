@@ -9,8 +9,21 @@ import { fetchRbacRolesPage } from "@/api/rbac-api";
 import { useStoreNameMap } from "@/hooks/use-store-name-map";
 import { createSystemUser } from "@/api/users-api";
 import { Button } from "@/components/ui/button";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "@/components/ui/card";
-import { Form, FormControl, FormField, FormItem, FormLabel, FormMessage } from "@/components/ui/form";
+import {
+  Card,
+  CardContent,
+  CardDescription,
+  CardHeader,
+  CardTitle,
+} from "@/components/ui/card";
+import {
+  Form,
+  FormControl,
+  FormField,
+  FormItem,
+  FormLabel,
+  FormMessage,
+} from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
 import { applyApiFieldErrors } from "@/lib/apply-field-errors";
 import { formatApiError } from "@/lib/api-errors";
@@ -33,10 +46,18 @@ const schema = z
     storeIds: z.array(z.number()),
   })
   .superRefine((v, ctx) => {
-    if (v.storeIds.length > 0 && v.primaryStoreId && v.primaryStoreId.trim() !== "") {
+    if (
+      v.storeIds.length > 0 &&
+      v.primaryStoreId &&
+      v.primaryStoreId.trim() !== ""
+    ) {
       const p = Number(v.primaryStoreId);
       if (!v.storeIds.includes(p)) {
-        ctx.addIssue({ code: "custom", path: ["primaryStoreId"], message: "Cửa hàng chính phải nằm trong danh sách đã chọn." });
+        ctx.addIssue({
+          code: "custom",
+          path: ["primaryStoreId"],
+          message: "Cửa hàng chính phải nằm trong danh sách đã chọn.",
+        });
       }
     }
   });
@@ -45,7 +66,9 @@ type FormValues = z.infer<typeof schema>;
 
 function toBody(v: FormValues): CreateUserRequestBody {
   const defaultStoreId =
-    v.defaultStoreId == null || v.defaultStoreId.trim() === "" ? null : Number(v.defaultStoreId);
+    v.defaultStoreId == null || v.defaultStoreId.trim() === ""
+      ? null
+      : Number(v.defaultStoreId);
   const primaryRaw = v.primaryStoreId?.trim() ?? "";
   const primaryStoreId = primaryRaw === "" ? null : Number(primaryRaw);
   const phone = v.phone?.trim() ? v.phone.trim() : null;
@@ -55,10 +78,15 @@ function toBody(v: FormValues): CreateUserRequestBody {
     password: v.password,
     fullName: v.fullName.trim(),
     phone,
-    defaultStoreId: Number.isFinite(Number(defaultStoreId)) ? Number(defaultStoreId) : null,
+    defaultStoreId: Number.isFinite(Number(defaultStoreId))
+      ? Number(defaultStoreId)
+      : null,
     roleIds: v.roleIds,
     storeIds: v.storeIds.length ? v.storeIds : [],
-    primaryStoreId: primaryStoreId != null && Number.isFinite(primaryStoreId) ? primaryStoreId : null,
+    primaryStoreId:
+      primaryStoreId != null && Number.isFinite(primaryStoreId)
+        ? primaryStoreId
+        : null,
   };
 }
 
@@ -92,7 +120,10 @@ export function SystemUserCreatePage() {
 
   const selectedStores = form.watch("storeIds");
 
-  const storeOptions = useMemo(() => stores.filter((s) => selectedStores.includes(s.id)), [stores, selectedStores]);
+  const storeOptions = useMemo(
+    () => stores.filter((s) => selectedStores.includes(s.id)),
+    [stores, selectedStores],
+  );
 
   const m = useMutation({
     meta: { skipGlobalErrorToast: true },
@@ -110,17 +141,20 @@ export function SystemUserCreatePage() {
 
   const toggleRole = (id: number, checked: boolean) => {
     const cur = form.getValues("roleIds");
-    if (checked) form.setValue("roleIds", [...cur, id], { shouldValidate: true });
-    else form.setValue(
-      "roleIds",
-      cur.filter((x) => x !== id),
-      { shouldValidate: true },
-    );
+    if (checked)
+      form.setValue("roleIds", [...cur, id], { shouldValidate: true });
+    else
+      form.setValue(
+        "roleIds",
+        cur.filter((x) => x !== id),
+        { shouldValidate: true },
+      );
   };
 
   const toggleStore = (id: number, checked: boolean) => {
     const cur = form.getValues("storeIds");
-    if (checked) form.setValue("storeIds", [...cur, id], { shouldValidate: true });
+    if (checked)
+      form.setValue("storeIds", [...cur, id], { shouldValidate: true });
     else {
       form.setValue(
         "storeIds",
@@ -143,7 +177,9 @@ export function SystemUserCreatePage() {
       <Card>
         <CardHeader>
           <CardTitle>Thêm người dùng hệ thống</CardTitle>
-          <CardDescription>Điền thông tin và phân quyền ban đầu.</CardDescription>
+          <CardDescription>
+            Điền thông tin và phân quyền ban đầu.
+          </CardDescription>
         </CardHeader>
         <CardContent>
           <Form {...form}>
@@ -174,7 +210,11 @@ export function SystemUserCreatePage() {
                     <FormItem>
                       <FormLabel>Mật khẩu ban đầu</FormLabel>
                       <FormControl>
-                        <Input type="password" autoComplete="new-password" {...field} />
+                        <Input
+                          type="password"
+                          autoComplete="new-password"
+                          {...field}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -244,13 +284,20 @@ export function SystemUserCreatePage() {
               <div className="space-y-2">
                 <p className="text-sm font-medium">Vai trò</p>
                 {rolesQ.isPending ? (
-                  <p className="text-sm text-muted-foreground">Đang tải danh sách vai trò…</p>
+                  <p className="text-sm text-muted-foreground">
+                    Đang tải danh sách vai trò…
+                  </p>
                 ) : roles.length === 0 ? (
-                  <p className="text-sm text-muted-foreground">Không có vai trò nào.</p>
+                  <p className="text-sm text-muted-foreground">
+                    Không có vai trò nào.
+                  </p>
                 ) : (
                   <div className="grid gap-2 rounded-md border p-3 sm:grid-cols-2">
                     {roles.map((r) => (
-                      <label key={r.id} className="flex cursor-pointer items-start gap-2 text-sm">
+                      <label
+                        key={r.id}
+                        className="flex cursor-pointer items-start gap-2 text-sm"
+                      >
                         <input
                           type="checkbox"
                           className="mt-1 h-4 w-4 rounded border-input"
@@ -267,19 +314,32 @@ export function SystemUserCreatePage() {
                 <FormField
                   control={form.control}
                   name="roleIds"
-                  render={() => <FormMessage />}
+                  render={() => (
+                    <FormItem>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
               </div>
 
               <div className="space-y-2">
-                <p className="text-sm font-medium">Cửa hàng được phép truy cập</p>
-                <p className="text-xs text-muted-foreground">Có thể để trống nếu chưa cần gán cửa hàng.</p>
+                <p className="text-sm font-medium">
+                  Cửa hàng được phép truy cập
+                </p>
+                <p className="text-xs text-muted-foreground">
+                  Có thể để trống nếu chưa cần gán cửa hàng.
+                </p>
                 {storesPending ? (
-                  <p className="text-sm text-muted-foreground">Đang tải cửa hàng…</p>
+                  <p className="text-sm text-muted-foreground">
+                    Đang tải cửa hàng…
+                  </p>
                 ) : (
                   <div className="grid gap-2 rounded-md border p-3 sm:grid-cols-2">
                     {stores.map((s) => (
-                      <label key={s.id} className="flex cursor-pointer items-start gap-2 text-sm">
+                      <label
+                        key={s.id}
+                        className="flex cursor-pointer items-start gap-2 text-sm"
+                      >
                         <input
                           type="checkbox"
                           className="mt-1 h-4 w-4 rounded border-input"
@@ -294,7 +354,11 @@ export function SystemUserCreatePage() {
                 <FormField
                   control={form.control}
                   name="storeIds"
-                  render={() => <FormMessage />}
+                  render={() => (
+                    <FormItem>
+                      <FormMessage />
+                    </FormItem>
+                  )}
                 />
                 {storeOptions.length > 0 ? (
                   <FormField
